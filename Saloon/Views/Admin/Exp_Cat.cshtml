@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Saloon.Models.Exp_Cat>
+
+@{
+    ViewBag.Title = "Exp_Cat";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Exp_Cat</h2>
+
+<p>
+    @Html.ActionLink("Add New Category", "AddExp_Cat")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EC_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.EC_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Update", "UpdateExp_Cat", new {  a=item.EC_ID  }) |
+            @Html.ActionLink("Delete", "DeleteExp_Cat", new {  a=item.EC_ID })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Saloon.Models.Employee>
+
+@{
+    ViewBag.Title = "Employee";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Employee</h2>
+
+<p>
+    @Html.ActionLink("Add Employee", "AddEmployee")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.E_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contact)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NIC)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.D_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dep_ID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.E_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Contact)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NIC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.D_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dep_ID)
+        </td>
+        <td>
+            @Html.ActionLink("Update", "UpdateEmployee", new { a = item.E_ID }) |
+            @Html.ActionLink("Delete", "DeleteEmployee", new { a = item.E_ID })
+        </td>
+    </tr>
+}
+
+</table>

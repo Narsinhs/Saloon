@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Saloon.Models.Appointment_Master>
+
+@{
+    ViewBag.Title = "Appointment";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<h2>Appointment</h2>
+
+<p>
+    @Html.ActionLink("Book Appointment Now!", "AddAppointment")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Ap_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.U_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.E_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ap_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.U_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.E_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>
