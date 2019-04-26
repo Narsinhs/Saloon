@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+    if (Session["Admin"] == null)
+    {
+        Response.Redirect("~/Admin/Index");
+    }
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Dashboard</h2>
+

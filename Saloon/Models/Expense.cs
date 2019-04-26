@@ -14,6 +14,7 @@ namespace Saloon.Models
         public decimal Amount { get; set; }
         public string Date { get; set; }
         public int EC_ID { get; set; }
+        public string EC_Name { get; set; }
         public string Add_By { get; set; }
         public List<Expense> all()
         {
@@ -33,6 +34,87 @@ namespace Saloon.Models
                 exall.Add(e);
             }
             sdr.Close();
+            Exp_Cat ec = new Exp_Cat();
+            List<Exp_Cat> allexpcat = ec.all();
+            for (int i = 0; i < allexpcat.Count; i++)
+            {
+                for (int j = 0; j < exall.Count; j++)
+                {
+                    if (allexpcat[i].EC_ID == exall[j].EC_ID)
+                    {
+                        exall[j].EC_Name = allexpcat[i].Name;
+                        break;
+                    }
+                }
+            }
+            return exall;
+        }
+        public List<Expense> expensebyecid()
+        {
+            SqlCommand cmd = new SqlCommand("byecid_Expense", Connection.Get());
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@ecid", EC_ID);
+            SqlDataReader sdr = cmd.ExecuteReader();
+            List<Expense> exall = new List<Expense>();
+            while (sdr.Read())
+            {
+                Expense e = new Expense();
+                e.E_ID = (int)sdr[0];
+                e.Name = (string)sdr[1];
+                e.Amount = (decimal)sdr[2];
+                e.Date = (string)sdr[3];
+                e.EC_ID = (int)sdr[4];
+                e.Add_By = (string)sdr[5];
+                exall.Add(e);
+            }
+            sdr.Close();
+            Exp_Cat ec = new Exp_Cat();
+            List<Exp_Cat> allexpcat = ec.all();
+            for (int i = 0; i < allexpcat.Count; i++)
+            {
+                for (int j = 0; j < exall.Count; j++)
+                {
+                    if (allexpcat[i].EC_ID == exall[j].EC_ID)
+                    {
+                        exall[j].EC_Name = allexpcat[i].Name;
+                        break;
+                    }
+                }
+            }
+            return exall;
+        }
+        public List<Expense> expbyname()
+        {
+            SqlCommand cmd = new SqlCommand("expbyname_Expense", Connection.Get());
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@name", Name);
+            SqlDataReader sdr = cmd.ExecuteReader();
+            List<Expense> exall = new List<Expense>();
+            while (sdr.Read())
+            {
+                Expense e = new Expense();
+                e.E_ID = (int)sdr[0];
+                e.Name = (string)sdr[1];
+                e.Amount = (decimal)sdr[2];
+                e.Date = (string)sdr[3];
+                e.EC_ID = (int)sdr[4];
+                e.Add_By = (string)sdr[5];
+                exall.Add(e);
+            }
+            sdr.Close();
+            Exp_Cat ec = new Exp_Cat();
+            List<Exp_Cat> allexpcat = ec.all();
+            for (int i = 0; i < allexpcat.Count; i++)
+            {
+                for (int j = 0; j < exall.Count; j++)
+                {
+                    if (allexpcat[i].EC_ID == exall[j].EC_ID)
+                    {
+                        exall[j].EC_Name = allexpcat[i].Name;
+                        break;
+                    }
+                }
+            }
             return exall;
         }
         public void search()
@@ -53,6 +135,7 @@ namespace Saloon.Models
             }
             sdr.Close();
         }
+        
         public void add()
         {
             SqlCommand cmd = new SqlCommand("Add_Expense",Connection.Get());

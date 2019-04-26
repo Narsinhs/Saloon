@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Saloon.Models.Department>
+
+@{
+    ViewBag.Title = "Department";
+    if (Session["Admin"] == null)
+    {
+        Response.Redirect("~/Admin/Index");
+    }
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div>
+    <form action="~/Admin/AddDepartment" method="get" style="position:relative; left:20px">
+        <button type="submit">Add Employee</button>
+    </form>
+</div>
+<br />
+<table class="table">
+    <tr>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.Dep_Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.Dep_Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "UpdateDepartment", new { a =item.Dep_ID }) |
+            @Html.ActionLink("Delete", "DeleteDepartment", new { a = item.Dep_ID })
+        </td>
+    </tr>
+}
+
+</table>

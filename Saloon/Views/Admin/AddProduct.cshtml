@@ -2,6 +2,10 @@
 
 @{
     ViewBag.Title = "AddProduct";
+    if (Session["Admin"] == null)
+    {
+        Response.Redirect("~/Admin/Index");
+    }
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 

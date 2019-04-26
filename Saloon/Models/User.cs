@@ -28,6 +28,7 @@ namespace Saloon.Models
         public string Address { get; set; }
         [Required]
         public int Age { get; set; }
+        public string LoginErrorMessage { get; set; }
         public List<User> alluser()
         {
             SqlCommand cmd = new SqlCommand("All_User",Connection.Get());
@@ -48,6 +49,26 @@ namespace Saloon.Models
             }
             sdr.Close();
             return au;
+        }
+        public void getbyname()
+        {
+            SqlCommand cmd = new SqlCommand("alluserbyname",Connection.Get());
+            cmd.Parameters.AddWithValue("@name", Name);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            SqlDataReader sdr = cmd.ExecuteReader();
+            List<User> au = new List<User>();
+            while (sdr.Read())
+            {
+                U_ID = (int)sdr[0];
+                Name = (string)sdr[1];
+                Email = (string)sdr[2];
+                Password = (string)sdr[3];
+                Contact = (string)sdr[4];
+                Address = (string)sdr[5];
+                Age = (int)sdr[6];
+                
+            }
+            sdr.Close();
         }
         public bool login()
         {

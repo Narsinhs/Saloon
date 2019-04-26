@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Saloon.Models.Facilities>
+
+@{
+    ViewBag.Title = "PackFacilitiesList";
+    if (Session["Admin"] == null)
+    {
+        Response.Redirect("~/Admin/Index");
+    }
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div>
+    <form action="~/Admin/AddPackFac" method="get" style="position:relative; left:20px">
+        <button type="submit">Add Facilities.</button>
+    </form>
+</div>
+<br />
+<table class="table">
+    <tr>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.F_Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.F_Name)
+        </td>
+      
+        <td>
+            @Html.ActionLink("Delete", "DeleteFacility", new { a=item.F_ID })
+        </td>
+    </tr>
+}
+
+</table>
+<div>
+    <form action="~/Admin/Package" method="get" style="position:relative; left:20px">
+        <button type="submit">Back</button>
+    </form>
+</div>
+<br/>

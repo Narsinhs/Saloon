@@ -12,6 +12,25 @@ namespace Saloon.Models
         public int P_id { get; set; }
         public string P_Name { get; set; }
         public decimal P_Cost  { get; set; }
+
+        public List<Product> productsbyappointment(int a)
+        {
+            SqlCommand cmd = new SqlCommand("productsbyproducts", Connection.Get());
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("apid", a);
+            List<Product> packages = new List<Product>();
+            SqlDataReader sdr = cmd.ExecuteReader();
+            while (sdr.Read())
+            {
+                Product p = new Product();
+                p.P_id = (int)sdr[0];
+                p.P_Name = (string)sdr[1];
+                p.P_Cost = (decimal)sdr[2];
+                packages.Add(p);
+            }
+            sdr.Close();
+            return packages;
+        }
         public void add()
         {
             SqlCommand cmd = new SqlCommand("Add_Product", Connection.Get());

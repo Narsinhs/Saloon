@@ -39,10 +39,16 @@ namespace Saloon.Controllers
         public ActionResult Login(Models.User u)
         {
             if (u.login())
-            {   
+            {
+                Session["User"] = u.U_ID;
                 return RedirectToAction("Index","User");
             }
-            else { return RedirectToAction("login"); }
+            else
+
+            {
+                u.LoginErrorMessage = "Wrong Email Or Password";
+                return View("Login",u);
+            }
         }
         [HttpGet]
         public ActionResult Signup()
@@ -52,13 +58,8 @@ namespace Saloon.Controllers
         [HttpPost]
         public ActionResult Signup(Models.User u)
         {
-            if (ModelState.IsValid)
-            {
-                u.add();
-                return RedirectToAction("Index");
-            }
-
-            return View();
+            u.add();
+            return RedirectToAction("Login");
         }
     }
 

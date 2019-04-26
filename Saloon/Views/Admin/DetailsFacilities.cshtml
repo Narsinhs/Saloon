@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Saloon.Models.Facilities>
+
+@{
+    ViewBag.Title = "DetailsFacilities";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.F_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.F_Cost)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.F_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.F_Cost)
+        </td>
+    </tr>
+}
+
+</table>
+<form action="~/Admin/Getallappointment" method="get" style="position:relative; left:20px">
+    <button type="submit">All Appointments</button>
+</form>
+<br />

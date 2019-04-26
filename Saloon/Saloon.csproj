@@ -354,11 +354,25 @@
     <Content Include="Views\User\Services.cshtml" />
     <Content Include="Views\User\About.cshtml" />
     <Content Include="Views\User\Contact.cshtml" />
-    <Content Include="Views\User\AddAppointment.cshtml" />
-    <Content Include="Views\User\AddFacAppointment.cshtml" />
-    <Content Include="Views\User\AddProductAppointment.cshtml" />
-    <Content Include="Views\User\AddPackageAppointment.cshtml" />
+    <Content Include="Views\Admin\AddPackFac.cshtml" />
+    <Content Include="Views\Admin\User.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Dashboard.cshtml" />
+    <Content Include="Views\Admin\Designation.cshtml" />
+    <Content Include="Views\Admin\AddDesignation.cshtml" />
+    <Content Include="Views\Admin\UpdateDesignation.cshtml" />
+    <Content Include="Views\Admin\Department.cshtml" />
+    <Content Include="Views\Admin\AddDepartment.cshtml" />
+    <Content Include="Views\Admin\UpdateDepartment.cshtml" />
+    <Content Include="Views\Admin\Admins.cshtml" />
+    <Content Include="Views\Admin\PackFacilitiesList.cshtml" />
+    <Content Include="Views\Admin\DetailsFacilities.cshtml" />
+    <Content Include="Views\Admin\DetailsPackages.cshtml" />
+    <Content Include="Views\Admin\DetailsProducts.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin2.cshtml" />
     <Content Include="Views\User\Appointment.cshtml" />
+    <Content Include="Views\User\AddAppointment.cshtml" />
+    <Content Include="Views\User\AppointmentProduct.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

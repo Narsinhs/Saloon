@@ -1,6 +1,10 @@
 ﻿
 @{
     ViewBag.Title = "About";
+    if (Session["User"] == null)
+    {
+        Response.Redirect("~/Static/Login");
+    }
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 <div class="slide-one-item home-slider owl-carousel">

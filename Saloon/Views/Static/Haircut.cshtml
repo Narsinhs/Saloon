@@ -1,6 +1,10 @@
 ﻿
 @{
     ViewBag.Title = "Haircut";
+    if (Session["User"] != null)
+    {
+        Response.Redirect("~/User/Index");
+    }
     Layout = "~/Views/Shared/_LayoutStatic.cshtml";
 }
 <div class="site-section">

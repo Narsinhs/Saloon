@@ -64,5 +64,17 @@ namespace Saloon.Models
             sdr.Close();
             return;
         }
+        public void searchbyname()
+        {
+            List<Exp_Cat> ec = all();
+            for (int i = 0; i < ec.Count; i++)
+            {
+                if (ec[i].Name == Name)
+                {
+                    EC_ID = ec[i].EC_ID;
+                    break;
+                }
+            }
+        }
     }
 }

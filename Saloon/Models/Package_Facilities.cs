@@ -36,9 +36,17 @@ namespace Saloon.Models
         }
         public void delete()
         {
-            SqlCommand cmd = new SqlCommand("Delete_Packfac",Connection.Get());
+            SqlCommand cmd = new SqlCommand("Delete_Package_Facilities", Connection.Get());
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@fid", F_ID);
+            cmd.Parameters.AddWithValue("@pid", P_ID);
+            cmd.ExecuteNonQuery();
+        }
+        public void deletebypack()
+        {
+            SqlCommand cmd = new SqlCommand("Delete_Packfacbypack", Connection.Get());
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@pid", P_ID);
             cmd.ExecuteNonQuery();
         }
         public void update()

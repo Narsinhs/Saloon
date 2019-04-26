@@ -2,21 +2,26 @@
 
 @{
     ViewBag.Title = "Package";
+    if (Session["Admin"] == null)
+    {
+        Response.Redirect("~/Admin/Index");
+    }
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Package</h2>
-
-<p>
-    @Html.ActionLink("Add New Package", "AddPackage")
-</p>
+<div>
+    <form action="~/Admin/AddPackage" method="get" style="position:relative; left:20px">
+        <button type="submit">Add New Package.</button>
+    </form>
+</div>
+<br />
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.P_ID)
+            @Html.DisplayNameFor(model => model.P_Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.P_Name)
+            @Html.DisplayNameFor(model => model.P_Cost)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Status)
@@ -26,17 +31,19 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.P_ID)
-        </td>
+        
         <td>
             @Html.DisplayFor(modelItem => item.P_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.P_Cost)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Status)
         </td>
         <td>
             @Html.ActionLink("Edit", "UpdatePackage", new {  a=item.P_ID }) |
+            @Html.ActionLink("Facilities", "PackFacilitiesList", new { a = item.P_ID }) |
             @Html.ActionLink("Delete", "DeletePackage", new {  a=item.P_ID })
         </td>
     </tr>

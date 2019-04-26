@@ -10,6 +10,7 @@ namespace Saloon.Models
     {
         public int Ap_ID { get; set; }
         public int P_ID { get; set; }
+        public string P_Name { get; set; }
 
         public List<Appointment_Package> all()
         {
@@ -25,6 +26,18 @@ namespace Saloon.Models
                 apppack.Add(ap);
             }
             sdr.Close();
+            Package p = new Package();
+            List<Package> pall = p.all();
+            for (int i = 0; i < apppack.Count; i++)
+            {
+                for (int j = 0; j < pall.Count; j++)
+                {
+                    if (pall[j].P_ID == apppack[i].P_ID)
+                    {
+                        apppack[i].P_Name = pall[j].P_Name;
+                    }
+                }
+            }
             return apppack;
         }
         public void add()

@@ -10,6 +10,7 @@ namespace Saloon.Models
     {
         public int Ap_ID { get; set; }
         public int F_ID { get; set; }
+        public string F_Name { get; set; }
         public List<Appointment_Facilities> all()
         {
             SqlCommand cmd = new SqlCommand("All_Appointment_Facilities", Connection.Get());

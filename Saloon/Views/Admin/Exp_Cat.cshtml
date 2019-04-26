@@ -2,19 +2,21 @@
 
 @{
     ViewBag.Title = "Exp_Cat";
+    if (Session["Admin"] == null)
+    {
+        Response.Redirect("~/Admin/Index");
+    }
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Exp_Cat</h2>
 
-<p>
-    @Html.ActionLink("Add New Category", "AddExp_Cat")
-</p>
+<form action="~/Admin/AddExp_Cat" method="get" style="position:relative; left:20px">
+    <button type="submit">Add Category</button>
+</form>
+<br/>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.EC_ID)
-        </th>
+        
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -23,9 +25,7 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.EC_ID)
-        </td>
+        
         <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>

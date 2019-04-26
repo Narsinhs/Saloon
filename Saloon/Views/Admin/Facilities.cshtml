@@ -2,19 +2,20 @@
 
 @{
     ViewBag.Title = "Facilities";
+    if (Session["Admin"] == null)
+    {
+        Response.Redirect("~/Admin/Index");
+    }
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Facilities</h2>
-
-<p>
-    @Html.ActionLink("Create New Facility", "AddFacilities")
-</p>
+<form action="~/Admin/AddFacilities" method="get" style="position:relative; left:20px">
+    <button type="submit">Add Facilities</button>
+</form>
+<br />
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.F_ID)
-        </th>
+        
         <th>
             @Html.DisplayNameFor(model => model.F_Name)
         </th>
@@ -26,9 +27,7 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.F_ID)
-        </td>
+        
         <td>
             @Html.DisplayFor(modelItem => item.F_Name)
         </td>

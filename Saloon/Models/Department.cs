@@ -30,7 +30,7 @@ namespace Saloon.Models
         }
         public void search()
         {
-            SqlCommand cmd = new SqlCommand("All_Department", Connection.Get());
+            SqlCommand cmd = new SqlCommand("Search_Department", Connection.Get());
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@depid", Dep_ID);
             SqlDataReader sdr = cmd.ExecuteReader();
@@ -39,6 +39,7 @@ namespace Saloon.Models
                 Dep_ID = (int)sdr[0];
                 Dep_Name = (string)sdr[1];
             }
+            sdr.Close();
         }
         public void update()
         {

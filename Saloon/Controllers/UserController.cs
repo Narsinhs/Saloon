@@ -8,10 +8,17 @@ namespace Saloon.Controllers
 {
     public class UserController : Controller
     {
+        //Set Up Appointment Friday
+        //Set Up Update Profile Friday
         // GET: User
         public ActionResult Index(Models.User u)
         {
             return View();
+        }
+        public ActionResult Signout()
+        {
+            Session["User"] = null;
+            return RedirectToAction("Index", "Static");
         }
         public ActionResult Haircut()
         {
@@ -34,72 +41,53 @@ namespace Saloon.Controllers
             Models.Appointment_Master am = new Models.Appointment_Master();
             am.U_ID = Models.GetDetail.U_ID;
             List<Appointment_Master> app = am.getallappoint();
-            if (app.Count > 0)
-            {
-                am = app[0];
-            }
             return View(app);
         }
-        [HttpGet]
         public ActionResult AddAppointment()
         {
             Employee em = new Employee();
-            ViewBag.idname = em.all();
+            ViewBag.emplist = em.all();
             return View();
         }
         [HttpPost]
-        public ActionResult AddAppointment(Appointment_Master apm)
+        public ActionResult AddAppointment(Appointment_Master am)
         {
-            apm.add();
-            return RedirectToAction("AddFacAppointment");
-        }
-        [HttpGet]
-        public ActionResult AddFacAppointment()
-        {
-            Facilities f = new Facilities();
-            ViewBag.Facall = f.all();
-            return View();
-        }
-        [HttpPost]
-        public ActionResult AddFacAppointment(Appointment_Facilities af)
-        {
-            Appointment_Master m = new Appointment_Master();
-            m.getlastid();
-            af.Ap_ID = m.Ap_ID;
-            af.add();
-            return RedirectToAction("AdFacAppointment");
-        }
-        [HttpGet]
-        public ActionResult AddProductAppointment()
-        {
-            Product p = new Product();
-            ViewBag.appro = p.all();
-            return View();
-        }
-        [HttpPost]
-        public ActionResult AddProductAppointment(Appointment_Product ap)
-        {
-            Appointment_Master am = new Appointment_Master();
-            am.getlastid();
-            ap.Ap_ID = am.Ap_ID;
-            ap.add();
-            return RedirectToAction("AddProductAppointment");
-        }
-        [HttpGet]
-        public ActionResult AddPackageAppointment()
-        {
-            Package p = new Package();
-            ViewBag.Packages = p.all();
-            return View();
-        }
-        [HttpPost]
-        public ActionResult AddPackageAppointment(Appointment_Package ap)
-        {
-            Appointment_Master am = new Appointment_Master();
-            am.getlastid();
-            ap.Ap_ID = am.Ap_ID;
+            am.U_ID = GetDetail.U_ID;
             am.add();
             return RedirectToAction("Appointment");
+        }
+        [HttpGet]
+        public ActionResult DeleteAppointment(int a)
+        {
+            Models.Appointment_Master am = new Appointment_Master();
+            am.Ap_ID = a;
+            am.delete();
+            return RedirectToAction("Appointment");
+        }
+        public ActionResult AppointmentProduct(int a)
+        {
+            Product p = new Product();
+            TempData["A"] = a;
+            List<Product> pp = p.productsbyappointment(a);
+            return View(pp);
+        }
+        public ActionResult AppointmentFacility(int a)
+        {
+            Facilities f = new Facilities();
+            TempData["A"] = a;
+            return View(f.byappointment(a));
+        }
+        public ActionResult AppointmentPackages(int a)
+        {
+            Package p = new Package();
+            TempData["A"] = a;
+            return View(p.packagebyappointment(a));
+        }
+        public ActionResult AddFacility(Appointment_Facilities ap)
+        {
+            ap.Ap_ID = Convert.ToInt32(TempData["A"]);
+            ap.add();
+            return RedirectToAction("AppointmentFacility");
         }
     }
 }

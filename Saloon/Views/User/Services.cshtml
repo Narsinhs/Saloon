@@ -1,6 +1,10 @@
 ﻿
 @{
     ViewBag.Title = "Services";
+    if (Session["User"] == null)
+    {
+        Response.Redirect("~/Static/Login");
+    }
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 <div class="site-section">

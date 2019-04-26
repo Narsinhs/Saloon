@@ -9,8 +9,36 @@ namespace Saloon.Controllers
 {
     public class AdminController : Controller
     {
+        //Layout - Template Setup - Saturday
+        //Apply Validation - Friday
+        //REPORT - EXPENSE,USER,APPOINTMENT - Saturday
+
         // GET: Admin
         public ActionResult Index()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Index(Admin ad)
+        {
+            if (ad.login())
+            {
+                Session["Admin"] = ad.A_ID;
+                return RedirectToAction("Dashboard");
+            }
+            else
+            {
+                ad.error = "Invalid name or password";
+                return View(ad);
+            }
+        }
+        public ActionResult Signout()
+        {
+            Session["Admin"] = null;
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public ActionResult Dashboard()
         {
             return View();
         }
@@ -75,11 +103,47 @@ namespace Saloon.Controllers
             return RedirectToAction("Package");
         }
         [HttpGet]
+        public ActionResult PackFacilitiesList(int a)
+        {
+            TempData["P_ID"] = a;
+            Facilities f = new Models.Facilities();
+            return View(f.bypackage(a));
+        }
+        [HttpGet]
+        public ActionResult DeleteFacility(int a)
+        {
+            Package_Facilities pf = new Package_Facilities();
+            pf.P_ID = Convert.ToInt32(TempData["P_ID"]);
+            pf.F_ID = a;
+            pf.delete();
+            return RedirectToAction("PackFacilitiesList",new { a = pf.P_ID });
+
+        }
+        //Session Validation Done
+        [HttpGet]
+        public ActionResult AddPackFac()
+        {
+            Facilities f = new Models.Facilities();
+            ViewBag.Fac = f.all();
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddPackFac(Package_Facilities f)
+        {
+            Package p = new Models.Package();
+            f.P_ID = Convert.ToInt32(TempData["P_ID"]);
+            f.add();
+            return RedirectToAction("PackFacilitiesList",new {a = f.P_ID });
+        }
+        [HttpGet]
         public ActionResult DeletePackage(int a)
         {
             Package p = new Models.Package();
             p.P_ID = a;
             p.delete();
+            Package_Facilities pf = new Package_Facilities();
+            pf.P_ID = a;
+            pf.delete();
             return RedirectToAction("Package");
         }
         [HttpGet]
@@ -145,16 +209,56 @@ namespace Saloon.Controllers
         public ActionResult Expense()
         {
             Expense ex = new Models.Expense();
+            Exp_Cat ec = new Models.Exp_Cat();
+            ViewBag.ec = ec.all();
+            if (TempData["type"] != null)
+            {
+                if (TempData["type"] == "ecid")
+                {
+                    ex.EC_Name = TempData["value"].ToString();
+                    ec.searchbyname();
+                    return View(ex.expensebyecid());
+                }
+                else
+                {
+                    ex.Name = (string)TempData["value"];
+                    return View(ex.expbyname());
+                }
+            }
             return View(ex.all());
+        }
+        [HttpGet]
+        public ActionResult SearchDetails(string name,string ecid,string expname)
+        {
+            if (ecid != null)
+            {
+                TempData["type"] = "ecid";
+                TempData["value"] = name;
+            }
+            else if (expname != null)
+            {
+
+                TempData["type"] = "expname";
+                TempData["value"] = name;
+            }
+            return RedirectToAction("Expense");
         }
         public ActionResult AddExpense()
         {
+            Exp_Cat ec = new Models.Exp_Cat();
+            ViewBag.Expcat = ec.all();
             return View();
         }
         [HttpPost]
         public ActionResult AddExpense(Expense e)
         {
+            Admin ad = new Admin();
+            ad.A_ID = Convert.ToInt32(Session["Admin"]);
+            ad.searchbyid();
+            e.Add_By = ad.Name;
             e.add();
+            Exp_Cat ec = new Models.Exp_Cat();
+            ViewBag.expcat = ec.all();
             return RedirectToAction("Expense");
         }
         [HttpGet]
@@ -169,6 +273,8 @@ namespace Saloon.Controllers
         public ActionResult UpdateExpense(int a)
         {
             Expense e = new Models.Expense();
+            Exp_Cat ec = new Models.Exp_Cat();
+            ViewBag.Expcat = ec.all();
             e.E_ID = a;
             e.search();
             return View(e);
@@ -184,12 +290,61 @@ namespace Saloon.Controllers
         public ActionResult Employee()
         {
             Employee em = new Models.Employee();
+            if (TempData["Evalue"] != null)
+            {
+                if (TempData["Evalue"] == "did")
+                {
+                    em.D_Name = TempData["Edata"].ToString();
+                    TempData["Evalue"] = null;
+                    TempData["Edata"] = null;
+                    return View(em.searchbydesignation());
+                }
+                else if (TempData["Evalue"] == "depid")
+                {
+                    em.Dep_Name = TempData["Edata"].ToString();
+                    TempData["Evalue"] = null;
+                    TempData["Edata"] = null;
+                    return View(em.searchbydepartment());
+                }
+                else {
+                    em.Name = TempData["Edata"].ToString();
+                    TempData["Evalue"] = null;
+                    TempData["Edata"] = null;
+                    return View(em.searchbyname());
+                }
+            }
             return View(em.all());
         }
         [HttpGet]
         public ActionResult AddEmployee()
         {
+            Department dp = new Models.Department();
+            ViewBag.depid = dp.all();
+            Designation dsg = new Designation();
+            ViewBag.ddddd = dsg.all();
             return View();
+        }
+        [HttpGet]
+        public ActionResult SearchDetailsEmployee(string name,string did,string depid,string ename)
+        {
+            if (did != null)
+            {
+                TempData["Evalue"] = "did";
+                TempData["Edata"] = Convert.ToInt32(name);
+            }
+            else if (depid != null)
+            {
+
+                TempData["Evalue"] = "depid";
+                TempData["Edata"] = Convert.ToInt32(name);
+            }
+            else if (ename != null)
+            {
+
+                TempData["Evalue"] = "ename";
+                TempData["Edata"] = name;
+            }
+            return RedirectToAction("Employee");
         }
         [HttpPost]
         public ActionResult AddEmployee(Employee e)
@@ -208,6 +363,10 @@ namespace Saloon.Controllers
         public ActionResult UpdateEmployee(int a)
         {
             Employee em = new Models.Employee();
+            Department dp = new Models.Department();
+            ViewBag.depp = dp.all();
+            Designation dsg = new Models.Designation();
+            ViewBag.dd = dsg.all();
             em.E_ID = a;
             em.search();
             return View(em);
@@ -282,7 +441,7 @@ namespace Saloon.Controllers
             Designation d = new Models.Designation();
             d.D_ID = a;
             d.search();
-            return View();
+            return View(d);
         }
         [HttpPost]
         public ActionResult UpdateDesignation(Designation d)
@@ -320,7 +479,7 @@ namespace Saloon.Controllers
         {
             Department d = new Models.Department();
             d.Dep_ID = a;
-            d.update();
+            d.search();
             return View(d);
         }
         [HttpPost]
@@ -329,6 +488,15 @@ namespace Saloon.Controllers
             d.update();
             return RedirectToAction("Department");
         }
+        [HttpGet]
+        public ActionResult DeleteDepartment(int a)
+        {
+            Models.Department d = new Models.Department();
+            d.Dep_ID = a;
+            d.delete();
+            return RedirectToAction("Department");
+        }
+        
         [HttpGet]
         public ActionResult User()
         {
@@ -344,11 +512,80 @@ namespace Saloon.Controllers
             u.delete();
             return RedirectToAction("User");
         }
+        public ActionResult Admins()
+        {
+            Admin ad = new Admin();
+            return View(ad.all());
+        }
+        [HttpGet]
+        public ActionResult AppStatus(int a)
+        {
+            Appointment_Master am = new Appointment_Master();
+            am.Ap_ID = a;
+            am.search();
+            am.Status = !am.Status;
+            am.update();
+            return RedirectToAction("Getallappointment");
+        }
+        public ActionResult DetailsFacilities(int a)
+        {
+            Facilities f = new Models.Facilities();
+            return View(f.byappointment(a));
+
+        }
+        public ActionResult DetailsPackages(int a)
+        {
+            Package p = new Models.Package();
+            return View(p.packagebyappointment(a));
+        }
+        public ActionResult DetailsProducts(int a)
+        {
+            Product p = new Product();
+            return View(p.productsbyappointment(a));
+        }
+        public ActionResult SearchAppointment(string name, string Uname,string Empname)
+        {
+            if (Uname != null)
+            {
+                TempData["Evalue"] = "Uname";
+                TempData["Edata"] = name;
+            }
+            else if (Empname != null)
+            {
+
+                TempData["Evalue"] = "Empname";
+                TempData["Edata"] = name;
+            }
+            return RedirectToAction("Getallappointment");
+        }
         [HttpGet]
         public ActionResult Getallappointment()
         {
             Appointment_Master am = new Appointment_Master();
-            
+            if (TempData["Evalue"] != null)
+            {
+                if (TempData["Evalue"] == "Uname")
+                {
+                    am.U_Name = TempData["Edata"].ToString();
+                    User u = new Models.User();
+                    u.Name = am.U_Name;
+                    u.getbyname();
+                    am.U_ID = u.U_ID;
+                    TempData["Evalue"] = null;
+                    TempData["Edata"] = null;
+                    return View(am.getallappoint());
+                }
+                else
+                {
+                    am.E_Name = TempData["Edata"].ToString();
+                    Employee em = new Models.Employee();
+                    em.Name = am.E_Name;
+                    em.getidbyname();
+                    am.E_ID = em.E_ID;
+                    return View(am.getallappointemp());
+                }
+
+            }
             return View(am.all());
         }
     }
